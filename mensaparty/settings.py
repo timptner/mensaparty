@@ -112,6 +112,18 @@ STATICFILES_DIRS = [
     BASE_DIR / 'mensaparty' / 'static'
 ]
 
+STATICFILES_STORAGE = config('STATIC_FILES_STORAGE', default='django.contrib.staticfiles.storage.StaticFilesStorage')
+
+AWS_S3_ENDPOINT_URL = config('BUCKET_ENDPOINT_URL', default='')
+
+AWS_STORAGE_BUCKET_NAME = config('BUCKET_NAME', default='')
+
+AWS_ACCESS_KEY_ID = config('BUCKET_ACCESS_KEY', default='')
+
+AWS_SECRET_ACCESS_KEY = config('BUCKET_SECRET_KEY', default='')
+
+AWS_S3_CUSTOM_DOMAIN = config('BUCKET_DOMAIN', default='')
+
 
 # Default primary key field type
 
