@@ -1,4 +1,14 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+
+
+def validate_ovgu_mail(value):
+    username, domain = value.split('@')
+    if domain not in ['st.ovgu.de', 'ovgu.de']:
+        raise ValidationError(
+            "Die Domain \"%(domain)s\" gehört nicht zur Otto-von-Guericke-Universität Magdeburg.",
+            params={'domain': domain},
+        )
 
 
 class Worker(models.Model):
@@ -26,11 +36,14 @@ class Worker(models.Model):
 
     first_name = models.CharField("Vorname", max_length=50)
     last_name = models.CharField("Nachname", max_length=50)
-    email = models.EmailField("E-Mail-Adresse", unique=True)
+    email = models.EmailField("E-Mail-Adresse", unique=True, validators=[validate_ovgu_mail])
     phone = models.CharField("Mobilnummer", max_length=20)
     faculty = models.CharField("Fakultät", max_length=3, choices=FACULTY_CHOICES)
+    is_barkeeper = models.BooleanField("Bist du Barkeeper?")
     experience = models.TextField("Erfahrung", blank=True)
     strength = models.PositiveSmallIntegerField("Stärke")
+    available_since = models.TimeField("Verfügbar ab", blank=True, null=True)
+    available_until = models.TimeField("Verfügbar bis", blank=True, null=True)
 
     class Meta:
         verbose_name = "Helfer"

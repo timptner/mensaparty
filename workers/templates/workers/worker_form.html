@@ -145,8 +145,32 @@
                 </div>
 
                 <div class="field">
-                    <label class="label" for="{{ form.experience.id_for_label }}">{{ form.experience.label }}
-                        (Optional)</label>
+                    <label class="label" for="{{ form.is_barkeeper.id_for_label }}">
+                        {{ form.is_barkeeper.label }}
+                    </label>
+
+                    <div class="control">
+                        {% for radio in form.is_barkeeper %}
+                            <label class="radio">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+
+                    {% if form.is_barkeeper.help_text %}
+                        <p class="help">{{ form.is_barkeeper.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.is_barkeeper.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.experience.id_for_label }}">
+                        {{ form.experience.label }} (Optional)
+                    </label>
 
                     <div class="control">
                         {{ form.experience }}
@@ -166,6 +190,7 @@
 
                     <div class="control has-icons-left">
                         {{ form.strength }}
+
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-weight-hanging"></i>
                         </span>
@@ -176,6 +201,50 @@
                     {% endif %}
 
                     {% for error in form.strength.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.available_since.id_for_label }}">
+                        {{ form.available_since.label }} (Optional)
+                    </label>
+
+                    <div class="control has-icons-left">
+                        {{ form.available_since }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </span>
+                    </div>
+
+                    {% if form.available_since.help_text %}
+                        <p class="help">{{ form.available_since.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.available_since.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.available_until.id_for_label }}">
+                        {{ form.available_until.label }} (Optional)
+                    </label>
+
+                    <div class="control has-icons-left">
+                        {{ form.available_until }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-martini-glass-citrus"></i>
+                        </span>
+                    </div>
+
+                    {% if form.available_until.help_text %}
+                        <p class="help">{{ form.available_until.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.available_until.errors %}
                         <p class="help is-danger">{{ error }}</p>
                     {% endfor %}
                 </div>

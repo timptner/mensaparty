@@ -67,5 +67,5 @@ class StrengthListFilter(admin.SimpleListFilter):
 @admin.register(Worker)
 class WorkerAdmin(admin.ModelAdmin):
     form = WorkerForm
-    list_display = ['__str__', 'strength']
-    list_filter = ['faculty', StrengthListFilter]
+    list_display = ['__str__', 'is_barkeeper', 'strength', 'available_since', 'available_until']
+    list_filter = ['faculty', 'is_barkeeper', StrengthListFilter]

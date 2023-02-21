@@ -64,6 +64,7 @@ class WorkerForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         faculty_choices = [('', '--- Auswählen ---')] + sorted(Worker.FACULTY_CHOICES, key=lambda v: v[1])
         self.fields['faculty'].choices = faculty_choices
+        self.fields['is_barkeeper'].required = True
 
     class Meta:
         model = Worker
@@ -73,6 +74,7 @@ class WorkerForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': "input"}),
             'email': forms.EmailInput(attrs={'class': "input"}),
             'phone': forms.TextInput(attrs={'class': "input"}),
+            'is_barkeeper': forms.RadioSelect(choices=[(True, "Ja"), (False, "Nein")]),
             'experience': forms.Textarea(attrs={
                 'class': "textarea",
                 'placeholder': """z. Bsp.
@@ -87,12 +89,17 @@ class WorkerForm(forms.ModelForm):
 """,
             }),
             'strength': forms.NumberInput(attrs={'class': "input"}),
+            'available_since': forms.TimeInput(attrs={'class': "input", 'type': 'time'}),
+            'available_until': forms.TimeInput(attrs={'class': "input", 'type': 'time'}),
         }
         help_texts = {
+            'email': "Es sind nur E-Mail-Adressen der Otto-von-Guericke-Universität Magdeburg erlaubt.",
             'phone': "Bitte gib deine Mobilnummer inklusive <a href=\"https://de.wikipedia.org/wiki/Internationale_"
                      "Telefonvorwahl\" target=\"_blank\">Ländercode</a> an.",
             'strength': "Wie viel kannst du hochheben? Bitte in Kilogram angeben. "
-                        "Eine Schätzung reicht aus."
+                        "Eine Schätzung reicht aus.",
+            'available_since': "Bei keiner Angabe wird von flexibler Startzeit ausgegangen.",
+            'available_until': "Bei keiner Angabe wird von flexibler Endzeit ausgegangen.",
         }
 
     def clean_phone(self):
