@@ -1,6 +1,7 @@
 # Django
 .env
 db.sqlite3
+/static/
 
 # PyCharm
 /.idea/
