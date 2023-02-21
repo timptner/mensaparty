@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Bewerben{% endblock %}
+{% block content %}
+    <div class="columns is-centered">
+        <div class="column is-half">
+
+            <h3 class="title">Bewerbung als Helfer</h3>
+
+            <article class="message is-info">
+                <div class="message-header">
+                    <p>Datenschutz</p>
+                </div>
+
+                <div class="message-body">
+                    <div class="content">
+                        <ul class="mt-0">
+                            <li>Wir benötigen deinen vollständigen Namen zur Identifikation.</li>
+                            <li>Wir benötigen deine E-Mail-Adresse zur generellen Kommunikation.</li>
+                            <li>
+                                Wir benötigen deine Mobilnummer, um dich am Tag der Veranstaltung
+                                zeitnah erreichen zu können.
+                            </li>
+                            {# TODO Add reason for faculty #}
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            {% if form.non_field_errors %}
+                <div class="notification is-danger is-light">
+                    <div class="content">
+                        <ul class="mt-0">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="field">
+                    <label class="label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+
+                    <div class="control has-icons-left">
+                        {{ form.first_name }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-person"></i>
+                        </span>
+                    </div>
+
+                    {% if form.first_name.help_text %}
+                        <p class="help">{{ form.first_name.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.first_name.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+
+                    <div class="control has-icons-left">
+                        {{ form.last_name }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-people-group"></i>
+                        </span>
+                    </div>
+
+                    {% if form.last_name.help_text %}
+                        <p class="help">{{ form.last_name.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.last_name.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+
+                    <div class="control has-icons-left">
+                        {{ form.email }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                    </div>
+
+                    {% if form.email.help_text %}
+                        <p class="help">{{ form.email.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.email.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+
+                    <div class="control has-icons-left">
+                        {{ form.phone }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </span>
+                    </div>
+
+                    {% if form.phone.help_text %}
+                        <p class="help">{{ form.phone.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.phone.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.faculty.id_for_label }}">{{ form.faculty.label }}</label>
+
+                    <div class="control has-icons-left">
+                        <div class="select is-fullwidth">
+                            {{ form.faculty }}
+                        </div>
+
+                        <div class="icon is-small is-left">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                    </div>
+
+                    {% if form.faculty.help_text %}
+                        <p class="help">{{ form.faculty.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.faculty.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.experience.id_for_label }}">{{ form.experience.label }}
+                        (Optional)</label>
+
+                    <div class="control">
+                        {{ form.experience }}
+                    </div>
+
+                    {% if form.experience.help_text %}
+                        <p class="help">{{ form.experience.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.experience.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label class="label" for="{{ form.strength.id_for_label }}">{{ form.strength.label }}</label>
+
+                    <div class="control has-icons-left">
+                        {{ form.strength }}
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-weight-hanging"></i>
+                        </span>
+                    </div>
+
+                    {% if form.strength.help_text %}
+                        <p class="help">{{ form.strength.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.strength.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Abschicken</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

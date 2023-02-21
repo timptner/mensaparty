@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block page %}
+    <div class="m-3 is-pulled-right">
+        <a href="{% url 'admin:login' %}">
+        <span class="icon">
+            <i class="fa-solid fa-right-to-bracket"></i>
+        </span>
+        </a>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <h1 class="title is-1">Mensa-Party</h1>
+                    <a class="button is-primary is-fullwidth is-large" href="{% url 'workers:apply' %}">Zur
+                        Anmeldung</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,4 @@
+Django~=4.1.7
+python-decouple==3.7
+dj_database_url~=1.2.0
+fontawesomefree~=6.3.0
