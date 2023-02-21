@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+
+{% block form_top %}
+    {% if not is_popup %}
+        <p>Dem neuen Benutzer wird im Anschluss eine E-Mail zum Festlegen seines Passworts geschickt.</p>
+    {% else %}
+        <p>Enter a username and password.</p>
+    {% endif %}
+{% endblock %}

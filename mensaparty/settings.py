@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 from decouple import config
 from dj_database_url import parse as db_url
+from django.urls import reverse_lazy
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +22,7 @@ ALLOWED_HOSTS = config(
 INSTALLED_APPS = [
     'workers',
 
+    'anymail',
     'fontawesomefree',
 
     'django.contrib.admin',
@@ -128,3 +130,26 @@ AWS_S3_CUSTOM_DOMAIN = config('BUCKET_DOMAIN', default='')
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# E-Mail
+
+EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
+
+DEFAULT_FROM_EMAIL = '"[Mensaparty] Fachschaftsrat Maschinenbau" <mensaparty@farafmb.de>'
+
+SERVER_EMAIL = '"[Server] Fachschaftsrat Maschinenbau" <server@farafmb.de>'
+
+ANYMAIL = {
+    'POSTMARK_SERVER_TOKEN': config('POSTMARK_API_TOKEN'),
+    'SEND_DEFAULTS': {
+        'esp_extra': {
+            'MessageStream': config('DEFAULT_STREAM', default='outbound'),
+        },
+    }
+}
+
+
+# Authentication
+
+LOGIN_URL = reverse_lazy('admin:login')

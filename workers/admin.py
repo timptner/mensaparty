@@ -1,7 +1,38 @@
 from django.contrib import admin
-from workers.forms import WorkerForm
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
+from workers.forms import UserCreationForm, WorkerForm
 from workers.models import Worker
-from django.db.models.query import EmptyQuerySet
+
+
+class UserAdmin(BaseUserAdmin):
+    add_form = UserCreationForm
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('username',),
+            },
+        ),
+        (
+            "Persönliche Informationen",
+            {
+                'classes': ('wide',),
+                'fields': ('first_name', 'last_name', 'email'),
+            },
+        ),
+    )
+
+    def save_form(self, request, form, change):
+        if change:
+            return form.save(commit=False)
+        else:
+            return form.save(request, commit=True)
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 
 
 class StrengthListFilter(admin.SimpleListFilter):
