@@ -62,9 +62,12 @@ class UserCreationForm(BaseUserCreationForm):
 class WorkerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        faculty_choices = [('', '--- Auswählen ---')] + sorted(Worker.FACULTY_CHOICES, key=lambda v: v[1])
-        self.fields['faculty'].choices = faculty_choices
-        self.fields['is_barkeeper'].required = True
+        if 'faculty' in self.fields.keys():
+            faculty_choices = [('', '--- Auswählen ---')] + sorted(Worker.FACULTY_CHOICES, key=lambda v: v[1])
+            self.fields['faculty'].choices = faculty_choices
+
+        if 'is_barkeeper' in self.fields.keys():
+            self.fields['is_barkeeper'].required = True
 
     class Meta:
         model = Worker
