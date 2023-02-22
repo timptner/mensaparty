@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
@@ -46,6 +46,9 @@ class UserCreationForm(BaseUserCreationForm):
             user.save()
             if hasattr(self, 'save_m2m'):
                 self.save_m2m()
+
+        groups = Group.objects.filter(name__in=['users_read', 'workers_read'])
+        user.groups.set(groups)
 
         current_site = get_current_site(request)
         context = {
