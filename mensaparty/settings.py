@@ -16,6 +16,8 @@ ALLOWED_HOSTS = config(
     cast=lambda v: [s.strip() for s in v.split(',')],
 )
 
+INTERNAL_IPS = ['127.0.0.1']
+
 
 # Application definition
 
