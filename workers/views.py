@@ -16,3 +16,7 @@ class ApplicationFormView(generic.CreateView):
 
 class SuccessView(generic.TemplateView):
     template_name = 'workers/success.html'
+
+
+class SiteNoticeView(generic.TemplateView):
+    template_name = 'workers/site_notice.html'
