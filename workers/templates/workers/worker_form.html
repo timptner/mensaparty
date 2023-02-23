@@ -2,46 +2,45 @@
 
 {% block title %}Bewerben{% endblock %}
 {% block content %}
-    <div class="columns is-centered">
-        <div class="column is-half">
+    <h3 class="title">Bewerbung als Helfer:in</h3>
 
-            <h3 class="title">Bewerbung als Helfer</h3>
+    <article class="message is-info">
+        <div class="message-header">
+            <p>Datenschutz</p>
+        </div>
 
-            <article class="message is-info">
-                <div class="message-header">
-                    <p>Datenschutz</p>
-                </div>
+        <div class="message-body">
+            <div class="content">
+                <ul class="mt-0">
+                    <li>Wir benötigen deinen vollständigen Namen zur Identifikation.</li>
+                    <li>Wir benötigen deine E-Mail-Adresse zur generellen Kommunikation.</li>
+                    <li>
+                        Wir benötigen deine Mobilnummer, um dich am Tag der Veranstaltung
+                        zeitnah erreichen zu können.
+                    </li>
+                    <li>Wir benötigen deine Fakultät für die Schichtplanung.</li>
+                </ul>
+            </div>
+        </div>
+    </article>
 
-                <div class="message-body">
-                    <div class="content">
-                        <ul class="mt-0">
-                            <li>Wir benötigen deinen vollständigen Namen zur Identifikation.</li>
-                            <li>Wir benötigen deine E-Mail-Adresse zur generellen Kommunikation.</li>
-                            <li>
-                                Wir benötigen deine Mobilnummer, um dich am Tag der Veranstaltung
-                                zeitnah erreichen zu können.
-                            </li>
-                            <li>Wir benötigen deine Fakultät für die Schichtplanung.</li>
-                        </ul>
-                    </div>
-                </div>
-            </article>
+    {% if form.non_field_errors %}
+        <div class="notification is-danger is-light">
+            <div class="content">
+                <ul class="mt-0">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 
-            {% if form.non_field_errors %}
-                <div class="notification is-danger is-light">
-                    <div class="content">
-                        <ul class="mt-0">
-                            {% for error in form.non_field_errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            {% endif %}
+    <form method="post">
+        {% csrf_token %}
 
-            <form method="post">
-                {% csrf_token %}
-
+        <div class="columns">
+            <div class="column">
                 <div class="field">
                     <label class="label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
 
@@ -145,6 +144,28 @@
                 </div>
 
                 <div class="field">
+                    <label class="label" for="{{ form.strength.id_for_label }}">{{ form.strength.label }}</label>
+
+                    <div class="control has-icons-left">
+                        {{ form.strength }}
+
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-weight-hanging"></i>
+                        </span>
+                    </div>
+
+                    {% if form.strength.help_text %}
+                        <p class="help">{{ form.strength.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% for error in form.strength.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="field">
                     <label class="label" for="{{ form.is_barkeeper.id_for_label }}">
                         {{ form.is_barkeeper.label }}
                     </label>
@@ -181,26 +202,6 @@
                     {% endif %}
 
                     {% for error in form.experience.errors %}
-                        <p class="help is-danger">{{ error }}</p>
-                    {% endfor %}
-                </div>
-
-                <div class="field">
-                    <label class="label" for="{{ form.strength.id_for_label }}">{{ form.strength.label }}</label>
-
-                    <div class="control has-icons-left">
-                        {{ form.strength }}
-
-                        <span class="icon is-small is-left">
-                            <i class="fa-solid fa-weight-hanging"></i>
-                        </span>
-                    </div>
-
-                    {% if form.strength.help_text %}
-                        <p class="help">{{ form.strength.help_text|safe }}</p>
-                    {% endif %}
-
-                    {% for error in form.strength.errors %}
                         <p class="help is-danger">{{ error }}</p>
                     {% endfor %}
                 </div>
@@ -248,17 +249,17 @@
                         <p class="help is-danger">{{ error }}</p>
                     {% endfor %}
                 </div>
-
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button type="submit" class="button is-primary">Abschicken</button>
-                    </div>
-
-                    <div class="control">
-                        <a class="button is-light" href="{% url 'workers:landing_page' %}">Abbrechen</a>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button type="submit" class="button is-info">Abschicken</button>
+            </div>
+
+            <div class="control">
+                <a class="button is-light" href="{% url 'workers:landing_page' %}">Abbrechen</a>
+            </div>
+        </div>
+    </form>
 {% endblock %}
