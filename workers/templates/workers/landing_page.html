@@ -1,23 +1,94 @@
 {% extends 'base.html' %}
 
-{% block page %}
-    <div class="m-3 is-pulled-right">
-        <a href="{% url 'admin:login' %}">
-        <span class="icon">
-            <i class="fa-solid fa-right-to-bracket"></i>
-        </span>
-        </a>
-    </div>
+{% load static %}
 
-    <section class="section">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-half">
-                    <h1 class="title is-1">Mensa-Party</h1>
-                    <a class="button is-primary is-fullwidth is-large" href="{% url 'workers:apply' %}">Zur
-                        Anmeldung</a>
+{% block page %}
+    <section class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="columns is-vcentered" style="width: 100vw;">
+                <div class="column">
+                    <figure class="image is-4by3">
+                        <img src="{% static 'img/thumbnail.png' %}" alt="Thumbnail">
+                    </figure>
+                </div>
+
+                <div class="column">
+                    <p class="title">Mensaparty 🕺 💃🏿</p>
+
+                    <div class="content">
+                        <p>
+                            Am 14. April 2023 findet <strong>endlich eine Mensaparty</strong> auf dem Hauptcampus der
+                            <a href="https://www.ovgu.de">Otto-von-Guericke-Universität Magdeburg</a> statt, welche
+                            Vertreter:innen aller Fachschaftsräte und des Studierendenrates organisiert haben. Damit
+                            die Party ein Fest wird, brauchen wir Unterstützung von Dir!
+                        </p>
+
+                        <p>
+                            Wir benötigen sowohl für den Aufbau, als auch während und nach der Party deine Hilfe. Wenn
+                            du Schichten übernimmst, bekommst du ein Helfer:innen-Bändchen, welches dir natürlich
+                            <strong>freien Eintritt</strong> verschafft und auch das ein oder andere
+                            <strong>Freigetränk</strong>.
+                        </p>
+
+                        <p class="mb-0">
+                            Mit dem Aufbau starten wir ab etwa 15 Uhr, die Party beginnt dann gegen 21 Uhr und wird bis
+                            maximal 5 Uhr andauern. Während der Party können Schichten an der Bar, am Eingang, an der
+                            Garderobe oder als Runner übernommen werden.
+                        </p>
+                        <p class="help">
+                            Runner sind Personen, welche flexibel eingesetzt werden und z. Bsp. Bars mit neuen
+                            Getränken und Bechern ausstatten oder Leergut und dreckige Becher ins Lager bringen.
+                        </p>
+
+                        <p>
+                            Da dies hoffentlich der Anfang einer Reihe von Parties in der Mensa wird, planen wir ein
+                            Briefing mit allen Helfer:innen ein paar Tage vor der Veranstaltung, wo wir Dir genau
+                            erklären, wie der zeitliche Ablaufplan der Party ist, was Deine Aufgaben sind und wer für
+                            Dich als Ansprechpartner:innen zur Verfügung steht. Eine Teilnahme an diesem Briefing sehen
+                            wir als verpflichtend an.
+                        </p>
+
+                        <p>
+                            Wir freuen uns sehr mit Dir zusammen die erste Party seit sehr vielen Jahren in der Mensa
+                            auszurichten.
+                        </p>
+                    </div>
+
+                    <a class="button is-info is-fullwidth" href="{% url 'workers:apply' %}">
+                        Zur Bewerbung als Helfer:in
+                    </a>
                 </div>
             </div>
+        </div>
+
+        <div class="hero-foot">
+            <nav class="tabs is-right">
+                <ul>
+                    <li>
+                        <a href="{% url 'admin:login' %}">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'workers:site_notice' %}">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-gavel"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'workers:privacy_policy' %}">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-user-secret"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </section>
 {% endblock %}
