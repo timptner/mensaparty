@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from workers.forms import UserCreationForm, WorkerForm
 from workers.models import Worker
 
@@ -69,3 +71,10 @@ class WorkerAdmin(admin.ModelAdmin):
     form = WorkerForm
     list_display = ['last_name', 'first_name', 'is_barkeeper', 'strength', 'available_since', 'available_until']
     list_filter = ['faculty', 'is_barkeeper', StrengthListFilter]
+    actions = ['contact_workers']
+
+    @admin.action(description="Ausgewählte Helfer kontaktieren")
+    def contact_workers(self, request, queryset):
+        selected = queryset.values_list('pk', flat=True)
+        query = ','.join(str(pk) for pk in sorted(selected))
+        return HttpResponseRedirect(reverse_lazy('workers:contact') + f"?workers={query}")

@@ -1,0 +1,7 @@
+{% if use_tag %}
+    <{{ tag }} class="label" {% include 'django/forms/attrs.html' %}>
+        {{ label }}
+    </{{ tag }}>
+{% else %}
+    {{ label }}
+{% endif %}

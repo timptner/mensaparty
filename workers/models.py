@@ -49,6 +49,9 @@ class Worker(models.Model):
         verbose_name = "Helfer"
         verbose_name_plural = "Helfer"
         ordering = ['last_name', 'first_name']
+        permissions = [
+            ('can_contact', "Can contact workers per email"),
+        ]
 
     def __str__(self):
         return self.get_full_name()

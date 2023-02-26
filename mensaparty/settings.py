@@ -1,3 +1,5 @@
+import django
+
 # noinspection PyPackageRequirements
 from decouple import config
 from dj_database_url import parse as db_url
@@ -50,7 +52,10 @@ ROOT_URLCONF = 'mensaparty.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'mensaparty' / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'mensaparty' / 'templates',
+            django.__path__[0] + '/forms/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,6 +67,8 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'mensaparty.wsgi.application'
 

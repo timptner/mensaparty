@@ -1,14 +1,18 @@
-from django import forms
+import re
+
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
+from django.core import mail
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
-from django.template import loader
+from django.template import loader, Template, Context
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from markdown import markdown
+from mensaparty import forms
 from workers.models import Worker
 
 
@@ -131,3 +135,74 @@ class WorkerForm(forms.ModelForm):
             raise ValidationError("Bist du es, Hulk? (Die Zahl ist zu groß.)")
 
         return value
+
+
+class ContactForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ''
+
+    recipients = forms.CharField(widget=forms.HiddenInput(), required=True)
+    subject = forms.CharField(label="Betreff", max_length=50, required=True)
+    message = forms.CharField(
+        label="Nachricht",
+        widget=forms.Textarea(attrs={
+            'placeholder': "Hallo {{ name }},\n\n"
+                           "wir freuen uns über Dein Bewerbung als Helfer! Hier kommen die ersten Informationen für "
+                           "Deine weitere Planung! Wir treffen uns für eine Besprechung am ...\n\n"
+                           "Beste Grüße\n"
+                           "ORGA-Team Mensaparty"
+        }),
+        help_text="Verwende <a href=\"https://www.markdownguide.org/basic-syntax/\">Markdown</a> zur Formatierung.",
+        required=True,
+    )
+
+    def clean_recipients(self):
+        data = self.cleaned_data['recipients']
+        if data:
+            match = re.fullmatch(r'[\d\s,]+', data)
+            if not match:
+                raise ValidationError("Nur Zahlen und Kommata sind erlaubt.")
+        return data
+
+    def clean_message(self):
+        data = self.cleaned_data['message']
+        if data:
+            if '{{ name }}' not in data:
+                raise ValidationError("Du hast <code>{{ name}}</code> in der Nachricht nicht verwendet!")
+        return data
+
+    def send_mail(self, request):
+        recipients = self.cleaned_data['recipients']
+        recipient_list = [recipient.strip() for recipient in recipients.split(',')]
+        workers = Worker.objects.filter(pk__in=recipient_list)
+
+        message = self.cleaned_data['message']
+        signature = loader.render_to_string('mail/_signature.md')
+
+        email_list = []
+        for worker in workers:
+            context = Context({'name': worker.first_name})
+            body = Template(message).render(context)
+            body += '\n\n' + signature
+
+            email = EmailMultiAlternatives(
+                subject="Neue Nachricht zur Mensaparty",
+                body=body,
+                from_email='mensaparty-batch@farafmb.de',
+                to=[worker.email],
+            )
+            email.attach_alternative(markdown(body), 'text/html')
+            email.esp_extra = {'MessageStream': 'broadcast'}
+            email_list.append(email)
+
+        connection = mail.get_connection()
+        connection.send_messages(email_list)
+
+        amount = len(email_list)
+        if amount == 1:
+            msg = f"Erfolgreich {amount} Helfer eine E-Mail geschickt."
+        else:
+            msg = f"Erfolgreich {amount} Helfern eine E-Mail geschickt."
+
+        messages.success(request, msg)

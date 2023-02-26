@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Helfer kontaktieren{% endblock %}
+
+{% block content %}
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <h3 class="title">Helfer kontaktieren</h3>
+
+            {% if not workers %}
+                <article class="message is-danger">
+                    <div class="message-header">
+                        <p>Keine Empfänger ausgewählt</p>
+                    </div>
+                    <div class="message-body">
+                        <p class="block">
+                            Bitte rufe diese Seite ausschließlich durch Auswahl der entsprechenden Aktion in der
+                            Admin-Seite
+                            auf.
+                        </p>
+
+                        <a class="button is-danger is-outlined block"
+                           href="{% url 'admin:workers_worker_changelist' %}">
+                            Zur Helfer-Übersicht
+                        </a>
+
+                        <p class="help">
+                            Fehler: Die Liste der Empfänger ist leer, da der Query-String einen ungültigen Wert für
+                            <code>workers</code> enthält.
+                        </p>
+                    </div>
+                </article>
+            {% endif %}
+
+            <article class="message is-info">
+                <div class="message-body">
+                    <div class="content">
+                        <p>
+                            Jeder Empfänger erhält eine individuelle Nachricht. Verwende daher
+                            <code>{% verbatim %}{{ name }}{% endverbatim %}</code>, um den Vorname des Helfers in der
+                            E-Mail automatisch einzufügen. Dies ist u. a. für einen niedrigen Spam-Score wichtig.
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <div class="content">
+                <p><strong>Empfänger</strong></p>
+
+                {% if workers %}
+                    <p>{{ workers|join:', ' }}</p>
+                {% else %}
+                    <p><em>Keine Empfänger</em></p>
+                {% endif %}
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if not workers %}
+                    <fieldset disabled>
+                {% endif %}
+
+                {{ form.as_div }}
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-info">Abschicken</button>
+                    </div>
+
+                    <div class="control">
+                        <a class="button is-light" href="{% url 'admin:workers_worker_changelist' %}">Abbrechen</a>
+                    </div>
+                </div>
+
+                {% if not workers %}
+                    </fieldset>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
