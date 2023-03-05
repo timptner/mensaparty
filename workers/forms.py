@@ -73,8 +73,9 @@ class WorkerForm(forms.ModelForm):
             faculty_choices = [('', '--- Auswählen ---')] + sorted(Worker.FACULTY_CHOICES, key=lambda v: v[1])
             self.fields['faculty'].choices = faculty_choices
 
-        if 'is_barkeeper' in self.fields.keys():
-            self.fields['is_barkeeper'].required = True
+        # if 'is_barkeeper' in self.fields.keys():
+            # self.fields['is_barkeeper'] = 'Nein'
+            # self.fields['is_barkeeper'].required = True
 
     class Meta:
         model = Worker
@@ -108,6 +109,7 @@ class WorkerForm(forms.ModelForm):
                      "Telefonvorwahl\" target=\"_blank\">Ländercode</a> an.",
             'strength': "Wie viel kannst du hochheben? Bitte in Kilogram angeben. "
                         "Eine Schätzung reicht aus.",
+            'is_barkeeper': "Keine Auswahl gilt als \"Nein\".",
             'available_since': "Bei keiner Angabe wird von flexibler Startzeit ausgegangen.",
             'available_until': "Bei keiner Angabe wird von flexibler Endzeit ausgegangen.",
         }
