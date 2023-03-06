@@ -89,14 +89,12 @@ class WorkerForm(forms.ModelForm):
             'experience': forms.Textarea(attrs={
                 'class': "textarea",
                 'placeholder': """z. Bsp.
-
 \"6 Jahre als Barkeeper in der Uni-Theke gearbeitet\"
-
 \"Kellnerin bei Peter Pane\"
-
 \"Kann 10 Maßkrüge gleichzeitig tragen\"
-
 \"Ex-Saftschubse bei AirBerlin\"
+\"Ich würde gerne die letzte Schicht machen\"
+\"Am liebsten bitte Bar/Runner/...\"
 """,
             }),
             'strength': forms.NumberInput(attrs={'class': "input"}),
@@ -111,7 +109,8 @@ class WorkerForm(forms.ModelForm):
                         "Eine Schätzung reicht aus.",
             'is_barkeeper': "Keine Auswahl gilt als \"Nein\".",
             'available_since': "Bei keiner Angabe wird von flexibler Startzeit ausgegangen.",
-            'available_until': "Bei keiner Angabe wird von flexibler Endzeit ausgegangen.",
+            'available_until': "Bei keiner Angabe wird von flexibler Endzeit ausgegangen. Die Angabe einer Endzeit "
+                               "ist mit dem Verlassen des Veranstaltungsgeländes gleichzusetzen.",
         }
 
     def clean_phone(self):
