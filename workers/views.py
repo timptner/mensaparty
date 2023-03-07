@@ -48,3 +48,7 @@ class ContactView(UserPassesTestMixin, generic.FormView):
     def form_valid(self, form):
         form.send_mail(self.request)
         return super().form_valid(form)
+
+
+class TermsView(generic.TemplateView):
+    template_name = 'workers/terms.html'

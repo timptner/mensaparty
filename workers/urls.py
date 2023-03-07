@@ -10,4 +10,5 @@ urlpatterns = [
     path('impressum/', views.SiteNoticeView.as_view(), name='site_notice'),
     path('datenschutz/', lambda request: redirect('https://stura-md.de/datenschutz/'), name='privacy_policy'),
     path('kontakt/', views. ContactView.as_view(), name='contact'),
+    path('agb/', views.TermsView.as_view(), name='terms'),
 ]
