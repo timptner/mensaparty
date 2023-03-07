@@ -51,7 +51,7 @@ class UserCreationForm(BaseUserCreationForm):
             if hasattr(self, 'save_m2m'):
                 self.save_m2m()
 
-        groups = Group.objects.filter(name__in=['users_read', 'workers_read'])
+        groups = Group.objects.filter(name__in=['Beobachter'])
         user.groups.set(groups)
 
         current_site = get_current_site(request)
