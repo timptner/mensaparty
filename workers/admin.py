@@ -25,6 +25,14 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        ("Persönliche Informationen", {"fields": ("first_name", "last_name", "email")}),
+        ("Berechtigungen", {"fields": ("is_superuser", "groups")}),
+    )
+    readonly_fields = ('is_superuser',)
+    list_display = ('username', 'first_name', 'last_name', 'is_superuser')
+    list_filter = ('groups',)
 
     def save_form(self, request, form, change):
         if change:
