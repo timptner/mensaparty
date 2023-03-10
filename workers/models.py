@@ -34,12 +34,14 @@ class Worker(models.Model):
         (ECONOMICS_AND_MANAGEMENT, "Wirtschaftswissenschaften"),
     ]
 
+    sorted_faculty_choices = [('', "--- Auswählen ---")] + sorted(FACULTY_CHOICES, key=lambda choice: choice[1])
+
     first_name = models.CharField("Vorname", max_length=50)
     last_name = models.CharField("Nachname", max_length=50)
     email = models.EmailField("E-Mail-Adresse", unique=True, validators=[validate_ovgu_mail])
     phone = models.CharField("Mobilnummer", max_length=20)
-    faculty = models.CharField("Fakultät", max_length=3, choices=FACULTY_CHOICES)
-    is_barkeeper = models.BooleanField("Bist du Barkeeper?")
+    faculty = models.CharField("Fakultät", max_length=3, choices=sorted_faculty_choices)
+    is_barkeeper = models.BooleanField("Bist du Barkeeper?", choices=[(True, "Ja"), (False, "Nein")], default=False)
     experience = models.TextField("Erfahrung", blank=True)
     strength = models.PositiveSmallIntegerField("Stärke")
     available_since = models.TimeField("Verfügbar ab", blank=True, null=True)

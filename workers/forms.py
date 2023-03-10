@@ -67,16 +67,6 @@ class UserCreationForm(BaseUserCreationForm):
 
 
 class WorkerForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if 'faculty' in self.fields.keys():
-            faculty_choices = [('', '--- Auswählen ---')] + sorted(Worker.FACULTY_CHOICES, key=lambda v: v[1])
-            self.fields['faculty'].choices = faculty_choices
-
-        # if 'is_barkeeper' in self.fields.keys():
-            # self.fields['is_barkeeper'] = 'Nein'
-            # self.fields['is_barkeeper'].required = True
-
     class Meta:
         model = Worker
         exclude = []
@@ -85,7 +75,7 @@ class WorkerForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': "input"}),
             'email': forms.EmailInput(attrs={'class': "input"}),
             'phone': forms.TextInput(attrs={'class': "input"}),
-            'is_barkeeper': forms.RadioSelect(choices=[(True, "Ja"), (False, "Nein")]),
+            'is_barkeeper': forms.RadioSelect,
             'experience': forms.Textarea(attrs={
                 'class': "textarea",
                 'placeholder': """z. Bsp.
@@ -107,7 +97,6 @@ class WorkerForm(forms.ModelForm):
                      "Telefonvorwahl\" target=\"_blank\">Ländercode</a> an.",
             'strength': "Wie viel kannst du hochheben? Bitte in Kilogram angeben. "
                         "Eine Schätzung reicht aus.",
-            'is_barkeeper': "Keine Auswahl gilt als \"Nein\".",
             'available_since': "Bei keiner Angabe wird von flexibler Startzeit ausgegangen.",
             'available_until': "Bei keiner Angabe wird von flexibler Endzeit ausgegangen. Die Angabe einer Endzeit "
                                "ist mit dem Verlassen des Veranstaltungsgeländes gleichzusetzen.",
