@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, FileResponse
 from django.urls import reverse_lazy
+from io import BytesIO
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font
 from workers.forms import UserCreationForm, WorkerForm
 from workers.models import Worker
 
@@ -79,7 +82,39 @@ class WorkerAdmin(admin.ModelAdmin):
     form = WorkerForm
     list_display = ['last_name', 'first_name', 'is_barkeeper', 'strength', 'available_since', 'available_until']
     list_filter = ['faculty', 'is_barkeeper', StrengthListFilter]
-    actions = ['contact_workers']
+    actions = ['export_workers', 'contact_workers']
+
+    @admin.action(description="Ausgewählte Helfer exportieren")
+    def export_workers(self, request, queryset):
+        workbook = Workbook()
+        workbook.iso_dates = True
+        worksheet = workbook.active
+        worksheet.append(["Nachname", "Vorname", "Fakultät", "Barkeeper", "Stärke (in kg)",
+                          "Verfügbar ab", "Verfügbar bis", "Erfahrung"])
+
+        for worker in queryset:
+            worksheet.append([
+                worker.last_name,
+                worker.first_name,
+                worker.get_faculty_display(),
+                "Ja" if worker.is_barkeeper else "Nein",
+                worker.strength,
+                worker.available_since,
+                worker.available_until,
+                worker.experience,
+            ])
+
+        for cell in worksheet[1]:
+            cell.font = Font(bold=True)
+
+        for cell in worksheet['H']:
+            cell.alignment = Alignment(wrap_text=True)
+
+        buffer = BytesIO()
+        workbook.save(buffer)
+        buffer.seek(0)
+
+        return FileResponse(buffer, as_attachment=True, filename='Helferliste.xlsx')
 
     @admin.action(description="Ausgewählte Helfer kontaktieren")
     def contact_workers(self, request, queryset):
