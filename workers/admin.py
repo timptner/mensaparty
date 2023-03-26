@@ -107,8 +107,8 @@ class WorkerAdmin(admin.ModelAdmin):
         for cell in worksheet[1]:
             cell.font = Font(bold=True)
 
-        for cell in worksheet['H']:
-            cell.alignment = Alignment(wrap_text=True)
+        # for cell in worksheet['H']:  # BUG WordWrap includes massive padding
+        #     cell.alignment = Alignment(wrap_text=True)
 
         buffer = BytesIO()
         workbook.save(buffer)
