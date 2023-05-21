@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback zur Mensaparty{% endblock %}
+
+{% block content %}
+    <div class="container is-max-desktop">
+        <h3 class="title">Feedback zur Mensaparty</h3>
+
+        <article class="message is-info">
+            <div class="message-body">
+                Alle Felder mit Ausnahme der Gesamt-Bewertung sind optional. Fülle nur die Felder aus, welche du
+                bewerten möchtest. Um eine anonyme Bewertung abzugeben, lasse das Feld "Name" und "E-Mail-Adresse" frei.
+            </div>
+        </article>
+
+        {% if form.errors %}
+            <article class="message is-danger">
+                <div class="message-body">
+                    Es gibt Probleme mit deinen Eingaben. Bitte löse alle Fehlermeldungen, um das Feedback abzuschicken.
+                </div>
+            </article>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="field">
+                    <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                    <div class="control">
+                        {{ field }}
+                    </div>
+
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <p class="help is-danger">
+                            {% for error in field.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-primary" type="submit">
+                        Abschicken
+                    </button>
+                </div>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="notification is-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
